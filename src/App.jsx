@@ -1,21 +1,20 @@
-// import Layout from "./components/Layout";
+import Layout from "./components/Layout";
 // import Questions from "./components/Questions";
 // import RessultOfExam from "./components/RessultOfExam";
 // import SetExam from "./components/SetExam";
- import Exam from "./components/Exam";
+// import Exam from "./components/Exam";
+import CreateUser from "./components/CreateUser";
 const App = () => {
   return (
     <>
-<Exam />
+      {/* <Exam /> */}
 
-
-      {/* <Layout>
-       <Questions /> 
-
-       <SetExam />  
-       <RessultOfExam /> 
-    </Layout> */}
-    
+      <Layout>
+        {/* <Questions /> */}
+        <CreateUser />
+        {/* <SetExam /> */}
+        {/* <RessultOfExam /> */}
+      </Layout>
     </>
   );
 };
