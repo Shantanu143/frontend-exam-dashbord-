@@ -1,4 +1,5 @@
 import { useState } from "react";
+import toast from "react-hot-toast";
 
 const CreateUser = () => {
   const [formData, setFormData] = useState({
@@ -64,11 +65,37 @@ const CreateUser = () => {
     return valid;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    
     if (validateForm()) {
-      console.log("Form Data:", formData);
-      // You can perform additional actions here, such as sending the form data to an API
+
+      console.log(formData);
+
+      const res = await fetch("/api/user/create", {
+        method: "POST",
+        headers: { "Content-Type": "application/json"},
+        body: JSON.stringify({
+          email: formData.emailAddress,
+          username: formData.username,
+          password: formData.password
+        }),
+      });
+
+      const { success, message, user } = await res.json();
+
+      if (success === true) {
+        toast.success(message);
+        setFormData({
+          username: "",
+          emailAddress: "",
+          password: "",
+          passwordConfirmation: "",
+        })
+        console.log(user);
+      } else {
+        toast.error("Got an error!");
+      }
     } else {
       console.log("Form validation failed");
     }
