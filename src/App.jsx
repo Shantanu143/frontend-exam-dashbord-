@@ -1,22 +1,21 @@
-import Layout from "./components/Layout";
-// import Questions from "./components/Questions";
-// import RessultOfExam from "./components/RessultOfExam";
-// import SetExam from "./components/SetExam";
-// import Exam from "./components/Exam";
-import CreateUser from "./components/CreateUser";
+
+import { Route, Routes } from 'react-router-dom';
+import Exam from "./components/Exam";
+import SignIn from "./components/Signin";
+import DashbordRoutes from './components/DashbordRoutes';
+import './App.css'
+
 const App = () => {
   return (
-    <>
-      {/* <Exam /> */}
 
-      <Layout>
-        {/* <Questions /> */}
-        <CreateUser />
-        {/* <SetExam /> */}
-        {/* <RessultOfExam /> */}
-      </Layout>
-    </>
+    <Routes>
+      <Route exact path="*" element={<SignIn />} />
+      <Route path="/exam" element={<Exam />} />
+      <Route path="/dashboard/*" element={<DashbordRoutes />} />
+    </Routes >
+
   );
 };
 
 export default App;
+

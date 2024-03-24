@@ -1,4 +1,4 @@
-import  { useState } from 'react';
+import { useState } from 'react';
 
 const SetExam = () => {
   // State variables to store user inputs
@@ -10,7 +10,7 @@ const SetExam = () => {
   // Function to handle form submission
   const handleSubmit = (event) => {
     event.preventDefault();
-    
+
     // Log user inputs to the console
     console.log('Exam Number:', examNumber);
     console.log('Exam Name:', examName);

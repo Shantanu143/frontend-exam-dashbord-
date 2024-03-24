@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 
 const Questions = () => {
@@ -10,6 +11,9 @@ const Questions = () => {
     answer: "one", // default answer
   });
 
+  const [questionsData, setQuestionsData] = useState([]); // Array to store all questions
+  const [currentQuestion, setCurrentQuestion] = useState(0); // Counter for the current question being entered
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
@@ -20,8 +24,21 @@ const Questions = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(formData);
-    // You can add further logic here, like sending data to an API
+    const newQuestion = { id: currentQuestion, ...formData }; // Add ID to the question object
+    setQuestionsData((prevQuestionsData) => [...prevQuestionsData, newQuestion]); // Add the new question to the array
+    setFormData({
+      question: "",
+      optionOne: "",
+      optionTwo: "",
+      optionThree: "",
+      optionFour: "",
+      answer: "one",
+    }); // Clear the form inputs after submission
+    setCurrentQuestion((prevCurrentQuestion) => prevCurrentQuestion + 1); // Increment the current question counter
+    if (currentQuestion === 9) {
+      // If all questions are entered
+      console.log("All Questions:", questionsData); // Log all question data
+    }
   };
 
   return (
@@ -29,7 +46,7 @@ const Questions = () => {
       <div className="max-w-5xl w-full px-6 sm:px-6 lg:px-8 mb-12">
         <div className="bg-gray-900 w-full shadow rounded p-8 sm:p-12">
           <p className="text-3xl font-bold leading-7 text-center text-white">
-            Enter Questions
+            Enter Questions ({currentQuestion + 1}/{questionsData.length + 1})
           </p>
           <form onSubmit={handleSubmit}>
             <div className="md:flex items-center mt-8">
@@ -115,12 +132,23 @@ const Questions = () => {
               </select>
             </div>
             <div className="flex items-center justify-center w-full mt-8">
-              <button
-                type="submit"
-                className="font-semibold leading-none text-white py-4 px-10 bg-blue-700 rounded hover:bg-blue-600 focus:ring-2 focus:ring-offset-2 focus:ring-blue-700 focus:outline-none"
-              >
-                Submit Question
-              </button>
+              {currentQuestion < 9 ? (
+                <button
+                  type="submit"
+                  className="font-semibold leading-none text-white py-4 px-10 bg-blue-700 rounded hover:bg-blue-600 focus:ring-2 focus:ring-offset-2 focus:ring-blue-700
+                  focus:outline-none"
+                >
+                  Add Question
+                </button>
+              ) : (
+                <button
+                  type="submit"
+                  className="font-semibold leading-none text-white py-4 px-10 bg-blue-700 rounded hover:bg-blue-600 focus:ring-2 focus:ring-offset-2 focus:ring-blue-700
+                  focus:outline-none"
+                >
+                  Create Exam
+                </button>
+              )}
             </div>
           </form>
         </div>
