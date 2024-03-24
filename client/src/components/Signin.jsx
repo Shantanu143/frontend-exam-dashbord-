@@ -45,8 +45,8 @@ const Signin = () => {
                 name="username"
                 value={formData.username}
                 onChange={handleChange}
-                placeholder="Enter your Username"
-                aria-label="Enter your Username"
+                placeholder="Enter your Exam Number"
+                aria-label="Enter your Exam Number"
               />
             </div>
             <div className="flex flex-col p-1.5 my-3 overflow-hidden border rounded-lg lg:flex-row focus-within:ring focus-within:ring-opacity-40 focus-within:border-blue-400 focus-within:ring-blue-300">

@@ -13,7 +13,6 @@ const App = () => {
       <Route path="/exam" element={<Exam />} />
       <Route path="/dashboard/*" element={<DashbordRoutes />} />
     </Routes >
-
   );
 };
 
