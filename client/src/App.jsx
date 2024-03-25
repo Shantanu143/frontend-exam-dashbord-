@@ -7,7 +7,6 @@ import './App.css'
 
 const App = () => {
   return (
-
     <Routes>
       <Route exact path="*" element={<SignIn />} />
       <Route path="/exam" element={<Exam />} />
