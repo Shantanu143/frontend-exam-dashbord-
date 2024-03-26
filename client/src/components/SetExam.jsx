@@ -1,21 +1,31 @@
-import { useState } from 'react';
 
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 const SetExam = () => {
-  // State variables to store user inputs
   const [examNumber, setExamNumber] = useState('');
   const [examName, setExamName] = useState('');
   const [dateOfExam, setDateOfExam] = useState('');
   const [numberOfQuestions, setNumberOfQuestions] = useState('');
-
-  // Function to handle form submission
+  const [examTime, setExamTime] = useState('');
+  const [examData, setExamData] = useState({});
+  const navigateTo = useNavigate();
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    // Log user inputs to the console
-    console.log('Exam Number:', examNumber);
-    console.log('Exam Name:', examName);
-    console.log('Date Of Exam:', dateOfExam);
-    console.log('Number of Questions:', numberOfQuestions);
+    // Define examData within the handleSubmit function
+    const examData = {
+      examNumber,
+      examName,
+      dateOfExam,
+      numberOfQuestions,
+      examTime,
+    };
+    console.log("Form Data:", examData);
+    // Now you can use examData here
+    setExamData(examData);
+    // You can then pass the examData to the Questions component via Link
+    navigateTo('/dashboard/questions', { state: examData });
   };
 
   return (
@@ -78,6 +88,22 @@ const SetExam = () => {
             <div>
               <label
                 className="text-gray-700 dark:text-gray-200"
+                htmlFor="examTime"
+              >
+                Exam Time(In Min)
+              </label>
+              <input
+                id="examTime"
+                type="number"
+                value={examTime}
+                onChange={(e) => setExamTime(e.target.value)}
+                className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 dark:focus:border-blue-300 focus:outline-none focus:ring"
+              />
+            </div>
+
+            <div>
+              <label
+                className="text-gray-700 dark:text-gray-200"
                 htmlFor="numberOfQuestions"
               >
                 Number of Questions
@@ -97,13 +123,14 @@ const SetExam = () => {
               type="submit"
               className="px-8 py-2.5 leading-5 text-white transition-colors duration-300 transform bg-gray-700 rounded-md hover:bg-gray-600 focus:outline-none focus:bg-gray-600"
             >
-              Create Exam
+              create exam
             </button>
           </div>
         </form>
-      </div>
-    </section>
+      </div >
+    </section >
   );
 };
 
 export default SetExam;
+

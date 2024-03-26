@@ -1,7 +1,13 @@
 
-import { useState } from "react";
+import React, { useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const Questions = () => {
+  const navigate = useNavigate(); // Hook for navigation
+  const location = useLocation(); // Hook for accessing location state
+  const examData = location.state; // Extracting exam data from location state
+
+  // State variables for form data and questions
   const [formData, setFormData] = useState({
     question: "",
     optionOne: "",
@@ -10,10 +16,10 @@ const Questions = () => {
     optionFour: "",
     answer: "one", // default answer
   });
-
   const [questionsData, setQuestionsData] = useState([]); // Array to store all questions
   const [currentQuestion, setCurrentQuestion] = useState(0); // Counter for the current question being entered
 
+  // Function to handle changes in form inputs
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
@@ -22,10 +28,17 @@ const Questions = () => {
     }));
   };
 
+  // Function to handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
-    const newQuestion = { id: currentQuestion, ...formData }; // Add ID to the question object
-    setQuestionsData((prevQuestionsData) => [...prevQuestionsData, newQuestion]); // Add the new question to the array
+    // Create a new question object
+    const newQuestion = { id: currentQuestion, ...formData };
+    // Add the new question to the questionsData array
+    setQuestionsData((prevQuestionsData) => [
+      ...prevQuestionsData,
+      newQuestion,
+    ]);
+    // Clear form data after submission
     setFormData({
       question: "",
       optionOne: "",
@@ -33,11 +46,15 @@ const Questions = () => {
       optionThree: "",
       optionFour: "",
       answer: "one",
-    }); // Clear the form inputs after submission
-    setCurrentQuestion((prevCurrentQuestion) => prevCurrentQuestion + 1); // Increment the current question counter
-    if (currentQuestion === 9) {
-      // If all questions are entered
-      console.log("All Questions:", questionsData); // Log all question data
+    });
+    // Increment the current question counter
+    setCurrentQuestion((prevCurrentQuestion) => prevCurrentQuestion + 1);
+    // If all questions are entered
+    if (currentQuestion === examData.numberOfQuestions - 1) {
+      // Log all question data
+      console.log("All Questions:", questionsData);
+      // Navigate to dashboard after submitting questions
+      navigate("/dashboard");
     }
   };
 
@@ -46,9 +63,10 @@ const Questions = () => {
       <div className="max-w-5xl w-full px-6 sm:px-6 lg:px-8 mb-12">
         <div className="bg-gray-900 w-full shadow rounded p-8 sm:p-12">
           <p className="text-3xl font-bold leading-7 text-center text-white">
-            Enter Questions ({currentQuestion + 1}/{questionsData.length + 1})
+            Enter Questions ({currentQuestion + 1}/{examData.numberOfQuestions})
           </p>
           <form onSubmit={handleSubmit}>
+            {/* Question input */}
             <div className="md:flex items-center mt-8">
               <div className="w-full flex flex-col">
                 <label className="font-semibold leading-none text-gray-300">
@@ -63,6 +81,8 @@ const Questions = () => {
                 />
               </div>
             </div>
+            {/* Options inputs */}
+            {/* Option one and option two */}
             <div className="md:flex items-center mt-8">
               <div className="w-full md:w-1/2 flex flex-col">
                 <label className="font-semibold leading-none text-gray-300">
@@ -89,6 +109,7 @@ const Questions = () => {
                 />
               </div>
             </div>
+            {/* Option three and option four */}
             <div className="md:flex items-center mt-8">
               <div className="w-full md:w-1/2 flex flex-col">
                 <label className="font-semibold leading-none text-gray-300">
@@ -115,6 +136,7 @@ const Questions = () => {
                 />
               </div>
             </div>
+            {/* Answer selection */}
             <div className="w-full flex flex-col mt-4">
               <label className="font-semibold leading-none text-gray-300">
                 Answer
@@ -131,20 +153,19 @@ const Questions = () => {
                 <option value="four">Option four</option>
               </select>
             </div>
+            {/* Submit button */}
             <div className="flex items-center justify-center w-full mt-8">
-              {currentQuestion < 9 ? (
+              {currentQuestion < examData.numberOfQuestions - 1 ? (
                 <button
                   type="submit"
-                  className="font-semibold leading-none text-white py-4 px-10 bg-blue-700 rounded hover:bg-blue-600 focus:ring-2 focus:ring-offset-2 focus:ring-blue-700
-                  focus:outline-none"
+                  className="font-semibold leading-none text-white py-4 px-10 bg-blue-700 rounded hover:bg-blue-600 focus:ring-2 focus:ring-offset-2 focus:ring-blue-700 focus:outline-none"
                 >
                   Add Question
                 </button>
               ) : (
                 <button
                   type="submit"
-                  className="font-semibold leading-none text-white py-4 px-10 bg-blue-700 rounded hover:bg-blue-600 focus:ring-2 focus:ring-offset-2 focus:ring-blue-700
-                  focus:outline-none"
+                  className="font-semibold leading-none text-white py-4 px-10 bg-blue-700 rounded hover:bg-blue-600 focus:ring-2 focus:ring-offset-2 focus:ring-blue-700 focus:outline-none"
                 >
                   Create Exam
                 </button>
