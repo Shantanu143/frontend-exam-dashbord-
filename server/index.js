@@ -31,6 +31,34 @@ app.get("/api/test", (req, res) => {
 
 app.use("/api/user", User);
 
-app.listen(PORT, ()=> {
+app.use((err, req, res, next) => {
+    let statusCode = err.statusCode || 500;
+    let message = err.message || "Internal server error";
+
+    if (err.code === 11000) {
+        return res.status(400).json({
+            success: false,
+            statusCode: 400,
+            message: "User already exist!",
+        })
+    }
+
+    if (err.name === "ValidationError") {
+        return res.status(401).json({
+            success: false,
+            statusCode: 401,
+            message: "Some Fields are missing!",
+        })
+    }
+
+    return res.status(statusCode).json({
+        success: false,
+        statusCode,
+        message: message,
+        err
+    })
+})
+
+app.listen(PORT, () => {
     console.log(`Server is running on ${PORT}`);
 })
