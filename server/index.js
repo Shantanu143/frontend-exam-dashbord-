@@ -2,14 +2,17 @@ import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import cors from "cors"
+import cookieParser from 'cookie-parser'
 
 import User from "./Routes/UserRoute.js"
+import Exam from "./Routes/Exam.js";
 
 dotenv.config();
 
 const app = express();
 app.use(express.json());
 app.use(cors({ origin: "http://localhost:5173" }))
+app.use(cookieParser());
 
 const PORT = process.env.PORT || 3300;
 const MONGO_URL = process.env.MONGO_URL;
@@ -30,6 +33,7 @@ app.get("/api/test", (req, res) => {
 })
 
 app.use("/api/user", User);
+app.use("/api/exam", Exam)
 
 app.use((err, req, res, next) => {
     let statusCode = err.statusCode || 500;
@@ -38,8 +42,8 @@ app.use((err, req, res, next) => {
     if (err.code === 11000) {
         return res.status(400).json({
             success: false,
-            statusCode: 400,
-            message: "User already exist!",
+            statusCode: 303,
+            message: "User already exist!"
         })
     }
 
@@ -47,7 +51,7 @@ app.use((err, req, res, next) => {
         return res.status(401).json({
             success: false,
             statusCode: 401,
-            message: "Some Fields are missing!",
+            message: "Some Fields are missing!"
         })
     }
 

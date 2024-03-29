@@ -3,13 +3,14 @@ import mongoose from "mongoose";
 const UserSchema = new mongoose.Schema({
     email: {
         type: String,
-        required: true,
-        unique: true,
+        required: [true, "Please enter Email"],
+        unique: [true, "Email Already Exist"],
         min: 6
     },
     username: {
         type: String,
-        required: true
+        unique: [true, "user name is not awailable"],
+        required: [true, "Please enter usename"],
     },
     role: {
         type:  String,
