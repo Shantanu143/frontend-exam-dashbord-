@@ -8,10 +8,10 @@ const router = express.Router();
 router.post("/create", verifyUser, async (req, res, next) => {
     try {
         const { role, email, id: UserId } = req.user;
-        const { examName: name, examNumber: exam_number, date, questions, students  } = req.body;
+        const { examName: name, examNumber: exam_number, date, questions, students } = req.body;
 
-        if(role != "admin") return next(ErrorHandler(400, "Bad exam creation request!"));
-        
+        if (role != "admin") return next(ErrorHandler(400, "Bad exam creation request!"));
+
         const newExam = await Exam.create({
             name,
             exam_number,
@@ -20,7 +20,7 @@ router.post("/create", verifyUser, async (req, res, next) => {
             students
         })
 
-        res.send("okk") 
+        res.send("okk");
     } catch (error) {
         next(error);
     }
