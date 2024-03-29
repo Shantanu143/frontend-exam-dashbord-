@@ -16,7 +16,6 @@ Router.post("/create", async (req, res, next) => {
             email,
             username,
             gender,
-            role,
             password: hashPass
         });
 

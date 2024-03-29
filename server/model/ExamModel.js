@@ -8,7 +8,6 @@ const ExamShema = new mongoose.Schema({
     },
     name: {
         type: String,
-        unique: true,
         required: [true, "Please provide exam name"],
     },
     exam_number: {
@@ -21,31 +20,42 @@ const ExamShema = new mongoose.Schema({
     },
     students: [
         {
-            email: String,
+            email: {
+                type: String,
+                unique: true
+            },
             name: String,
-            unique: true,
             id: {
                 type: mongoose.Types.ObjectId,
+                unique: true,
                 ref: "User"
             },
         }
     ],
     enrolled: [
         {
-            email: String,
+            email: {
+                type: String,
+                unique: true
+            },
             name: String,
             id: {
                 type: mongoose.Types.ObjectId,
+                unique: true,
                 ref: "User"
             },
         }
     ],
     submited: [
         {
-            email: String,
+            email: {
+                type: String,
+                unique: true
+            },
             name: String,
             id: {
                 type: mongoose.Types.ObjectId,
+                unique: true,
                 ref: "User"
             },
             Attended: {
