@@ -11,27 +11,46 @@ const Questions = (data) => {
   });
 
   const { totalQuestions, name, number } = data.data;
-
-  const [questionsData, setQuestionsData] = useState([]); // Array to store all questions
   const [currentQuestion, setCurrentQuestion] = useState(1); // Counter for the current question being entered
+  const Questions = [];
+  const [question, setQuestion] = useState([]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+
     setFormData((prevData) => ({
       ...prevData,
       [name]: value,
     }));
   };
 
-  const addQuestions = () => {
-    setQuestionsData({
-      ...questionsData,
+  // const addQuestions = async () => {
+  //   if (currentQuestion < totalQuestions) {
+  //     setCurrentQuestion(currentQuestion + 1);
+  //   }
+  //   // console.log(formData);
+  //   Questions.push(formData);
+
+  //   setFormData({
+  //     question: "",
+  //     optionOne: "",
+  //     optionTwo: "",
+  //     optionThree: "",
+  //     optionFour: "",
+  //     answer: "one",
+  //   });
+  //   // console.log("Through add question " + Questions );
+  // };
+
+  const addExamQuestion = (event) => {
+    Questions.push(formData);
+
+    setQuestion({
+      ...question,
       formData,
     });
 
-    if (currentQuestion < totalQuestions) {
-      setCurrentQuestion(currentQuestion + 1);
-    }
+    console.log("Through add question " + question);
 
     setFormData({
       question: "",
@@ -42,13 +61,14 @@ const Questions = (data) => {
       answer: "one",
     });
 
-    console.log(questionsData);
+    if (currentQuestion < totalQuestions) {
+      setCurrentQuestion(currentQuestion + 1);
+    }
   };
 
   const createExam = (event) => {
-    event.preventDefault();
-
-    console.log(questionsData);
+    Questions.push(formData);
+    console.log(Questions);
   };
 
   return (
@@ -147,14 +167,14 @@ const Questions = (data) => {
                   type="button"
                   className="font-semibold leading-none text-white py-4 px-10 bg-blue-700 rounded hover:bg-blue-600 focus:ring-2 focus:ring-offset-2 focus:ring-blue-700
                   focus:outline-none"
-                  onClick={addQuestions}
+                  onClick={addExamQuestion}
                 >
                   Add Question
                 </button>
               ) : (
                 <button
                   type="button"
-                  onClick={() => createExam}
+                  onClick={createExam}
                   className="font-semibold leading-none text-white py-4 px-10 bg-blue-700 rounded hover:bg-blue-600 focus:ring-2 focus:ring-offset-2 focus:ring-blue-700
                   focus:outline-none"
                 >

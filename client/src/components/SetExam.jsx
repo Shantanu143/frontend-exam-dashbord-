@@ -27,6 +27,7 @@ const SetExam = (maxQuestion) => {
     console.log("Exam Name:", examName);
     console.log("Date Of Exam:", dateOfExam);
     console.log("Number of Questions:", numberOfQuestions);
+    
     setData({
       totalQuestions: numberOfQuestions,
       name: examName,
@@ -37,8 +38,7 @@ const SetExam = (maxQuestion) => {
 
   return (
     <section className="flex justify-center items-center h-screen">
-      $
-      {open ? (
+      {open && data.totalQuestions && data.name && data.number ? (
         <Questions data={data} />
       ) : (
         <>
