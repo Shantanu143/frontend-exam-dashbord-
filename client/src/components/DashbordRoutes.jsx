@@ -11,6 +11,8 @@ const DashbordRoutes = () => {
         {/* <Route path="/questions" element={<Questions />} /> */}
         <Route path="/setexam" element={<SetExam />} />
         <Route path="/createuser" element={<CreateUser />} />
+        <Route path="/questions" element={<Questions />} />
+        <Route path="/createuser" element={<CreateUser />} />
         <Route path="/resultofexam" element={<RessultOfExam />} />
       </Routes>
     </Layout>
