@@ -1,15 +1,17 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
+import { useState } from "react";
+import toast from "react-hot-toast";
+import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 const SetExam = () => {
-  const [examNumber, setExamNumber] = useState('');
-  const [examName, setExamName] = useState('');
-  const [dateOfExam, setDateOfExam] = useState('');
-  const [numberOfQuestions, setNumberOfQuestions] = useState('');
-  const [examTime, setExamTime] = useState('');
+  const [examNumber, setExamNumber] = useState("");
+  const [examName, setExamName] = useState("");
+  const [dateOfExam, setDateOfExam] = useState("");
+  const [numberOfQuestions, setNumberOfQuestions] = useState("");
+  const [examTime, setExamTime] = useState("");
   const [examData, setExamData] = useState({});
   const navigateTo = useNavigate();
-  const handleSubmit = (event) => {
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
     // Define examData within the handleSubmit function
@@ -20,11 +22,20 @@ const SetExam = () => {
       numberOfQuestions,
       examTime,
     };
-    console.log("Form Data:", examData);
-    // Now you can use examData here
-    setExamData(examData);
-    // You can then pass the examData to the Questions component via Link
-    navigateTo('/dashboard/questions', { state: examData });
+
+    const res = await fetch(`/api/exam/get/${examName}`, {});
+
+    const { success, message } = await res.json();
+
+    if (success) {
+      console.log("Form Data:", examData);
+      // Now you can use examData here
+      setExamData(examData);
+      // You can then pass the examData to the Questions component via Link
+      navigateTo("/dashboard/questions", { state: examData });
+    } else {
+      toast.error(message);
+    }
   };
 
   return (
@@ -45,6 +56,8 @@ const SetExam = () => {
               </label>
               <input
                 id="examNumber"
+                required={true}
+                min={1}
                 type="number"
                 value={examNumber}
                 onChange={(e) => setExamNumber(e.target.value)}
@@ -61,6 +74,7 @@ const SetExam = () => {
               </label>
               <input
                 id="examName"
+                required={true}
                 type="text"
                 value={examName}
                 onChange={(e) => setExamName(e.target.value)}
@@ -77,6 +91,7 @@ const SetExam = () => {
               </label>
               <input
                 id="dateOfExam"
+                required={true}
                 type="date"
                 value={dateOfExam}
                 onChange={(e) => setDateOfExam(e.target.value)}
@@ -93,6 +108,8 @@ const SetExam = () => {
               </label>
               <input
                 id="examTime"
+                min={1}
+                required={true}
                 type="number"
                 value={examTime}
                 onChange={(e) => setExamTime(e.target.value)}
@@ -109,6 +126,8 @@ const SetExam = () => {
               </label>
               <input
                 id="numberOfQuestions"
+                min={1}
+                required={true}
                 type="number"
                 value={numberOfQuestions}
                 onChange={(e) => setNumberOfQuestions(e.target.value)}
@@ -126,8 +145,8 @@ const SetExam = () => {
             </button>
           </div>
         </form>
-      </div >
-    </section >
+      </div>
+    </section>
   );
 };
 

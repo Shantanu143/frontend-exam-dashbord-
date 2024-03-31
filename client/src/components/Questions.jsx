@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import toast from "react-hot-toast";
 
 const Questions = () => {
   const navigate = useNavigate(); // Hook for navigation
@@ -30,16 +31,16 @@ const Questions = () => {
   // Function to handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
-    
+
     // Create a new question object
     const newQuestion = { id: questionsData.length, ...formData };
-    
+
     // Add the new question to the questionsData array
     setQuestionsData((prevQuestionsData) => [
       ...prevQuestionsData,
       newQuestion,
     ]);
-    
+
     // Clear form data after submission
     setFormData({
       question: "",
@@ -49,7 +50,7 @@ const Questions = () => {
       optionFour: "",
       answer: "one",
     });
-    
+
     // Increment the current question counter
     setCurrentQuestion((prevCurrentQuestion) => prevCurrentQuestion + 1);
   };
@@ -59,17 +60,45 @@ const Questions = () => {
     console.log("All Questions:", questionsData);
     // If all questions are entered
     if (currentQuestion == examData.numberOfQuestions) {
-      // Navigate to dashboard after submitting questions
-      navigate("/dashboard");
+      const res = async () => {
+        const data = await fetch("/api/exam/create", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            name: examData.examName,
+            exam_number: examData.examNumber,
+            date: examData.dateOfExam,
+            time: examData.examTime,
+            questions: questionsData,
+          }),
+        });
+
+        const { success, message } = await data.json();
+        if (success) {
+          toast.success(message);
+          navigate("/dashboard");
+        } else {
+          toast.error(message);
+        }
+      };
+
+      res();
     }
   }, [questionsData]);
+
+  console.log(examData);
+  console.log(examData.examName + " " + examData.numberOfQuestions);
 
   return (
     <div className="flex justify-center items-center h-screen">
       <div className="max-w-5xl w-full px-6 sm:px-6 lg:px-8 mb-12">
         <div className="bg-gray-900 w-full shadow rounded p-8 sm:p-12">
           <p className="text-3xl font-bold leading-7 text-center text-white">
-            Enter Questions ({currentQuestion + 1}/{examData.numberOfQuestions})
+            Enter Questions ({" "}
+            {currentQuestion != examData.numberOfQuestions
+              ? `${currentQuestion + 1}/ ${examData.numberOfQuestions}`
+              : `${currentQuestion}/ ${examData.numberOfQuestions}`}
+            )
           </p>
           <form onSubmit={handleSubmit}>
             {/* Question input */}

@@ -4,9 +4,11 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken"
 import { ErrorHandler } from "../utils/ErrorHandler.js";
 
-const Router = express.Router();
+const oneFifty = 1000 * 60 * 60 * 24 * 150;
 
-Router.post("/create", async (req, res, next) => {
+const router = express.Router();
+
+router.post("/create", async (req, res, next) => {
     try {
 
         const { username, email, gender, password, role } = req.body;
@@ -21,19 +23,47 @@ Router.post("/create", async (req, res, next) => {
 
         const { password: pass, createdAt, updatedAt, __v, ...rest } = await user._doc
 
-        const token = jwt.sign({ email: user.email, role: user.role, id: user._id,  }, process.env.TOKEN, {subject: "exam"});
 
-        res.cookie("_account_data_01", token, { secure: true, maxAge: 1000 * 60 * 60 * 24 * 150 })
-        .status(201)
-        .json({
-            success: true,
-            message: "User has been created successfully",
-            user: rest
-        })
+        res.status(201)
+            .json({
+                success: true,
+                message: "User has been created successfully",
+                user: rest
+            })
 
     } catch (error) {
         next(error)
     }
 })
 
-export default Router;
+
+router.post("/get", async (req, res, next) => {
+    try {
+
+        const { email, password } = req.body;
+        if (!email, !password) return next(ErrorHandler(400, "Something is meesing!"));
+
+        const LoginUser = await User.findOne({ email });
+
+        if (!LoginUser) return next(ErrorHandler(400, "User not exist!"));
+
+        const passOk = bcrypt.compareSync(password, LoginUser.password)
+        if (!passOk) return next(ErrorHandler(400, "Wrong password!"));
+
+        const token = jwt.sign({ _id: LoginUser._id, role: LoginUser.role, email: LoginUser.email }, process.env.JWT_SECRET, { subject: "exam" })
+
+        const { password: pass, createdAt, updatedAt, __v, ...rest } = LoginUser._doc
+
+        res.cookie("_Admin_access_account", token, { secure: true, maxAge: oneFifty }).status(200).json({
+            success: true,
+            message: "admin login success"
+        });
+
+    } catch (error) {
+        next(error)
+    }
+})
+
+
+
+export default router;

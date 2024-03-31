@@ -14,9 +14,23 @@ const ExamShema = new mongoose.Schema({
         type: String,
         required: [true, "Please provide exam number"]
     },
+    creator: {
+        email: {
+            type: String,
+            unique: true
+        },
+        _id: {
+            type: mongoose.Types.ObjectId,
+            unique: true
+        },
+    },
     date: {
         type: Date,
         required: [true, "Provide exam date"]
+    },
+    time: {
+        type: String,
+        required: [true, "Provide exam Time"]
     },
     students: [
         {
