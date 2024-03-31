@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 
 const Questions = () => {
@@ -30,13 +30,16 @@ const Questions = () => {
   // Function to handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
+    
     // Create a new question object
-    const newQuestion = { id: currentQuestion, ...formData };
+    const newQuestion = { id: questionsData.length, ...formData };
+    
     // Add the new question to the questionsData array
     setQuestionsData((prevQuestionsData) => [
       ...prevQuestionsData,
       newQuestion,
     ]);
+    
     // Clear form data after submission
     setFormData({
       question: "",
@@ -46,16 +49,20 @@ const Questions = () => {
       optionFour: "",
       answer: "one",
     });
+    
     // Increment the current question counter
     setCurrentQuestion((prevCurrentQuestion) => prevCurrentQuestion + 1);
+  };
+
+  // Log all question data whenever questionsData changes
+  useEffect(() => {
+    console.log("All Questions:", questionsData);
     // If all questions are entered
-    if (currentQuestion === examData.numberOfQuestions - 1) {
-      // Log all question data
-      console.log("All Questions:", questionsData);
+    if (currentQuestion == examData.numberOfQuestions) {
       // Navigate to dashboard after submitting questions
       navigate("/dashboard");
     }
-  };
+  }, [questionsData]);
 
   return (
     <div className="flex justify-center items-center h-screen">
