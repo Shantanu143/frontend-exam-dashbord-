@@ -30,16 +30,16 @@ const Questions = () => {
   // Function to handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
-    
+
     // Create a new question object
     const newQuestion = { id: questionsData.length, ...formData };
-    
+
     // Add the new question to the questionsData array
     setQuestionsData((prevQuestionsData) => [
       ...prevQuestionsData,
       newQuestion,
     ]);
-    
+
     // Clear form data after submission
     setFormData({
       question: "",
@@ -49,7 +49,7 @@ const Questions = () => {
       optionFour: "",
       answer: "one",
     });
-    
+
     // Increment the current question counter
     setCurrentQuestion((prevCurrentQuestion) => prevCurrentQuestion + 1);
   };
@@ -59,10 +59,31 @@ const Questions = () => {
     console.log("All Questions:", questionsData);
     // If all questions are entered
     if (currentQuestion == examData.numberOfQuestions) {
-      // Navigate to dashboard after submitting questions
-      navigate("/dashboard");
+      
+      const res = async () => {
+        const data = await fetch("/api/exam/create", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            name: examData.examName,
+            exam_number: examData.examNumber,
+            date: examData.dateOfExam,
+            time: examData.examTime,
+            questions: questionsData,
+          }),
+        });
+
+        const res = await data.json();
+        console.log(res);
+      };
+
+      res();
+      // navigate("/dashboard");
     }
   }, [questionsData]);
+
+  console.log(examData);
+  console.log(examData.examName + " " + examData.numberOfQuestions);
 
   return (
     <div className="flex justify-center items-center h-screen">

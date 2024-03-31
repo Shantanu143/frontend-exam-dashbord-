@@ -45,6 +45,7 @@ const SetExam = () => {
               </label>
               <input
                 id="examNumber"
+                required={true}
                 type="number"
                 value={examNumber}
                 onChange={(e) => setExamNumber(e.target.value)}
@@ -61,6 +62,7 @@ const SetExam = () => {
               </label>
               <input
                 id="examName"
+                required={true}
                 type="text"
                 value={examName}
                 onChange={(e) => setExamName(e.target.value)}
@@ -77,6 +79,7 @@ const SetExam = () => {
               </label>
               <input
                 id="dateOfExam"
+                required={true}
                 type="date"
                 value={dateOfExam}
                 onChange={(e) => setDateOfExam(e.target.value)}
@@ -93,6 +96,7 @@ const SetExam = () => {
               </label>
               <input
                 id="examTime"
+                required={true}
                 type="number"
                 value={examTime}
                 onChange={(e) => setExamTime(e.target.value)}
@@ -109,6 +113,7 @@ const SetExam = () => {
               </label>
               <input
                 id="numberOfQuestions"
+                required={true}
                 type="number"
                 value={numberOfQuestions}
                 onChange={(e) => setNumberOfQuestions(e.target.value)}
