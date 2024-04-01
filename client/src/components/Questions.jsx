@@ -76,7 +76,7 @@ const Questions = () => {
         const { success, message } = await data.json();
         if (success) {
           toast.success(message);
-          navigate("/dashboard");
+          navigate("/dashboard/users");
         } else {
           toast.error(message);
         }
