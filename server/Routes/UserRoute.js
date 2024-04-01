@@ -3,6 +3,7 @@ import User from "../model/UserMode.js"
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken"
 import { ErrorHandler } from "../utils/ErrorHandler.js";
+import verifyUser from "../utils/VerifyUser.js";
 
 const oneFifty = 1000 * 60 * 60 * 24 * 150;
 
@@ -61,6 +62,21 @@ router.post("/get", async (req, res, next) => {
 
     } catch (error) {
         next(error)
+    }
+})
+
+router.get("/all", verifyUser, async (req, res, next) => {
+    try {
+
+        const getAll = await User.find({ role: "user" });
+
+        res.status(200).json({
+            success: true,
+            user: getAll
+        })
+
+    } catch (error) {
+        next(error);
     }
 })
 
