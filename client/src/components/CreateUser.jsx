@@ -7,6 +7,9 @@ const CreateUser = () => {
     emailAddress: "",
     password: "",
     passwordConfirmation: "",
+    course: "",
+    startDate: "",
+    endDate: "",
   });
 
   const [formErrors, setFormErrors] = useState({
@@ -14,6 +17,9 @@ const CreateUser = () => {
     emailAddress: "",
     password: "",
     passwordConfirmation: "",
+    course: "",
+    startDate: "",
+    endDate: "",
   });
 
   const handleChange = (e) => {
@@ -61,6 +67,24 @@ const CreateUser = () => {
       errors.passwordConfirmation = "Passwords do not match";
     }
 
+    // Course validation
+    if (!formData.course) {
+      valid = false;
+      errors.course = "Course is required";
+    }
+
+    // Start Date validation
+    if (!formData.startDate) {
+      valid = false;
+      errors.startDate = "Start Date is required";
+    }
+
+    // End Date validation
+    if (!formData.endDate) {
+      valid = false;
+      errors.endDate = "End Date is required";
+    }
+
     setFormErrors(errors);
     return valid;
   };
@@ -69,16 +93,16 @@ const CreateUser = () => {
     e.preventDefault();
     
     if (validateForm()) {
-
-      console.log(formData);
-
       const res = await fetch("/api/user/create", {
         method: "POST",
         headers: { "Content-Type": "application/json"},
         body: JSON.stringify({
           email: formData.emailAddress,
           username: formData.username,
-          password: formData.password
+          password: formData.password,
+          course: formData.course,
+          startDate: formData.startDate,
+          endDate: formData.endDate,
         }),
       });
 
@@ -91,8 +115,10 @@ const CreateUser = () => {
           emailAddress: "",
           password: "",
           passwordConfirmation: "",
-        })
-        console.log(user);
+          course: "",
+          startDate: "",
+          endDate: "",
+        });
       } else {
         toast.error("Got an error!");
       }
@@ -199,6 +225,75 @@ const CreateUser = () => {
                 <p className="text-red-500">
                   {formErrors.passwordConfirmation}
                 </p>
+              )}
+            </div>
+
+            <div>
+              <label
+                htmlFor="course"
+                className="text-gray-700 dark:text-gray-200"
+              >
+                Course
+              </label>
+              <select
+                id="course"
+                name="course"
+                value={formData.course}
+                onChange={handleChange}
+                className={`block w-full px-4 py-2 mt-2 text-gray-700 bg-white border ${
+                  formErrors.course ? "border-red-500" : "border-gray-200"
+                } rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 dark:focus:border-blue-300 focus:outline-none focus:ring`}
+              >
+                <option value="">Select Course</option>
+                <option value="Advance Excel">Advance Excel</option>
+                <option value="Tally Prime">Tally Prime</option>
+              </select>
+              {formErrors.course && (
+                <p className="text-red-500">{formErrors.course}</p>
+              )}
+            </div>
+
+            <div>
+              <label
+                htmlFor="startDate"
+                className="text-gray-700 dark:text-gray-200"
+              >
+                Start Date
+              </label>
+              <input
+                id="startDate"
+                type="date"
+                name="startDate"
+                value={formData.startDate}
+                onChange={handleChange}
+                className={`block w-full px-4 py-2 mt-2 text-gray-700 bg-white border ${
+                  formErrors.startDate ? "border-red-500" : "border-gray-200"
+                } rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 dark:focus:border-blue-300 focus:outline-none focus:ring`}
+              />
+              {formErrors.startDate && (
+                <p className="text-red-500">{formErrors.startDate}</p>
+              )}
+            </div>
+
+            <div>
+              <label
+                htmlFor="endDate"
+                className="text-gray-700 dark:text-gray-200"
+              >
+                End Date
+              </label>
+              <input
+                id="endDate"
+                type="date"
+                name="endDate"
+                value={formData.endDate}
+                onChange={handleChange}
+                className={`block w-full px-4 py-2 mt-2 text-gray-700 bg-white border ${
+                  formErrors.endDate ? "border-red-500" : "border-gray-200"
+                } rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 dark:focus:border-blue-300 focus:outline-none focus:ring`}
+              />
+              {formErrors.endDate && (
+                <p className="text-red-500">{formErrors.endDate}</p>
               )}
             </div>
           </div>
