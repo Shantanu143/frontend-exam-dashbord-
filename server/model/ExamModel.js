@@ -34,13 +34,10 @@ const ExamShema = new mongoose.Schema({
     },
     students: [
         {
-            email: {
-                type: String,
-                unique: true
-            },
             name: String,
             _id: {
                 type: mongoose.Types.ObjectId,
+                required: true,
                 unique: true,
                 ref: "User"
             },

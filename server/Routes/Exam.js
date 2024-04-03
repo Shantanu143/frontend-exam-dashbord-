@@ -75,16 +75,19 @@ router.get("/isAdded/:id", verifyUser, async (req, res, next) => {
 
         const getExam = await Exam.findById(id);
 
-        if (!getExam.students.includes( {id: NewUserId} )) {
+        const found = getExam.students.some(ele => String(ele._id) === NewUserId )
+
+        if (!found) {
             await getExam.updateOne({
                 $push: {
                     students: {
-                        id: NewUserId,
-                        email,
+                        _id: NewUserId,
                         name
                     }
                 }
             })
+
+            console.log(found)
 
             return res.status(200).json({
                 success: true,
@@ -94,8 +97,7 @@ router.get("/isAdded/:id", verifyUser, async (req, res, next) => {
             await getExam.updateOne({
                 $pull: {
                     students: {
-                        id: NewUserId,
-                        email,
+                        _id: NewUserId,
                         name
                     }
                 }
@@ -112,6 +114,24 @@ router.get("/isAdded/:id", verifyUser, async (req, res, next) => {
         next(error);
     }
 })
+
+const data = [
+    {
+        email: "suru123@gmail.com",
+        name: "suraj mate"
+    },
+    {
+        email: "suru123@gmail.com",
+        name: "suraj mate"
+    }
+]
+
+const found = data.some(ele => ele.email === "suru123@gmail.com");
+if (found) {
+    console.log(true);
+} else {
+    console.log(false);
+}
 
 router.get("/all", verifyUser, async (req, res, next) => {
     try {

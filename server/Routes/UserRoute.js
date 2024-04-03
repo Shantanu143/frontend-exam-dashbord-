@@ -24,7 +24,6 @@ router.post("/create", async (req, res, next) => {
 
         const { password: pass, createdAt, updatedAt, __v, ...rest } = await user._doc
 
-
         res.status(201)
             .json({
                 success: true,
