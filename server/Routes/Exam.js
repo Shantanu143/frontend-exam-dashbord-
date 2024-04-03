@@ -64,7 +64,7 @@ router.get("/get/:name", verifyUser, async (req, res, next) => {
     }
 })
 
-router.get("/isAdded/:id", verifyUser, async (req, res, next) => {
+router.post("/isAdded/:id", verifyUser, async (req, res, next) => {
     try {
 
         const { id } = req.params;
@@ -82,7 +82,7 @@ router.get("/isAdded/:id", verifyUser, async (req, res, next) => {
                 $push: {
                     students: {
                         _id: NewUserId,
-                        name
+                        name: name
                     }
                 }
             })
@@ -91,7 +91,8 @@ router.get("/isAdded/:id", verifyUser, async (req, res, next) => {
 
             return res.status(200).json({
                 success: true,
-                message: "User has been added to exam"
+                res : "added",
+                message: `${name} added to exam`
             })
         } else {
             await getExam.updateOne({
@@ -105,33 +106,35 @@ router.get("/isAdded/:id", verifyUser, async (req, res, next) => {
 
             return res.status(200).json({
                 success: true,
-                message: "User has been removed"
+                res : "removed",
+                message: `${name} has been removed`
             })
 
         }
 
     } catch (error) {
+        console.log(error);
         next(error);
     }
 })
 
-const data = [
-    {
-        email: "suru123@gmail.com",
-        name: "suraj mate"
-    },
-    {
-        email: "suru123@gmail.com",
-        name: "suraj mate"
-    }
-]
+router.get("/students/:id", async(req, res, next)=> {
+    try {
+        
+        const { id } = req.params;
+        const getExam = await Exam.findById(id);
 
-const found = data.some(ele => ele.email === "suru123@gmail.com");
-if (found) {
-    console.log(true);
-} else {
-    console.log(false);
-}
+        const { students } = await getExam._doc;
+
+        res.status(200).json({
+            success: true,
+            data: students
+        })
+
+    } catch (error) {
+        next(error)
+    }
+})
 
 router.get("/all", verifyUser, async (req, res, next) => {
     try {
