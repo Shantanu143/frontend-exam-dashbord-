@@ -22,7 +22,6 @@ try {
     console.log("Database is connected");
 } catch (error) {
     console.log("Database is Not Connected!");
-    console.log(error);
 }
 
 app.get("/api/test", (req, res) => {
