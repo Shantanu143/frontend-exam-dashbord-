@@ -42,6 +42,7 @@ app.use((err, req, res, next) => {
         return res.status(400).json({
             success: false,
             statusCode: 303,
+            err,
             message: "User already exist!"
         })
     }

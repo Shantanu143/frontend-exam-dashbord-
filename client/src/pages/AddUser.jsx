@@ -57,7 +57,7 @@ const AddUsers = () => {
   console.log(students);
 
   const handleAdd = async ({ userId, name }) => {
-    const res = await fetch(`/api/exam//isAdded/${id}`, {
+    const res = await fetch(`/api/exam/isAdded/${id}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -67,18 +67,13 @@ const AddUsers = () => {
     });
 
     const { success, res: Res, message } = await res.json();
+console.log(message);
+  if(res === "added"){
+    toast.success(message)
+  }else{
+    toast.success(message)
+  }
 
-    success ? toast.message(message) : "";
-
-    if (Res === "added") {
-      setStudents({
-        ...students,
-        _id: id,
-      });
-      console.log(message);
-    }
-
-    console.log(students);
   };
 
   const handleDelete = (id) => {};

@@ -37,7 +37,6 @@ const ExamShema = new mongoose.Schema({
             name: String,
             _id: {
                 type: mongoose.Types.ObjectId,
-                required: true,
                 unique: true,
                 ref: "User"
             },

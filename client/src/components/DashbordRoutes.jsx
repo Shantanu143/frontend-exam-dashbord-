@@ -7,6 +7,7 @@ import RessultOfExam from './RessultOfExam'
 import Users from './Users'
 import ExamSettings from './ExamSettings'
 import AddUsers from '../pages/AddUser'
+import ManageExam from './ManageExam'
 const DashbordRoutes = () => {
   return (
     <Layout>
@@ -20,6 +21,7 @@ const DashbordRoutes = () => {
         <Route path="/users" element={<Users />} />
         <Route path="/resultofexam" element={<RessultOfExam />} />
         <Route path="/examsettings" element={<ExamSettings />} />
+        <Route path="/manageExam" element={<ManageExam />} />
       </Routes>
     </Layout>
   )

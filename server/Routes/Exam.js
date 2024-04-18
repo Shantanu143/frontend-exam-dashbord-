@@ -34,7 +34,6 @@ router.post("/create", verifyUser, async (req, res, next) => {
         })
 
     } catch (error) {
-        console.log(error);
         next(error);
     }
 })
@@ -53,7 +52,7 @@ router.get("/get/:name", verifyUser, async (req, res, next) => {
             })
 
         } else {
-            res.status(401).json({
+            res.status(200).json({
                 success: true,
                 message: "This name is awailable"
             })
@@ -87,8 +86,6 @@ router.post("/isAdded/:id", verifyUser, async (req, res, next) => {
                 }
             })
 
-            console.log(found)
-
             return res.status(200).json({
                 success: true,
                 res : "added",
@@ -113,7 +110,6 @@ router.post("/isAdded/:id", verifyUser, async (req, res, next) => {
         }
 
     } catch (error) {
-        console.log(error);
         next(error);
     }
 })

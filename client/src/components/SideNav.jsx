@@ -1,7 +1,8 @@
 import { Link } from "react-router-dom";
 import logo from "../assets/logo.png";
 import { FiUser, FiUserPlus, FiUsers } from "react-icons/fi";
-import { CiLogin } from "react-icons/ci"
+import { PiExamDuotone } from "react-icons/pi"
+import { CiLogin } from "react-icons/ci";
 import { LuPieChart } from "react-icons/lu";
 
 const SideNav = () => {
@@ -103,6 +104,8 @@ const SideNav = () => {
             </a>
  */}
 
+{/* kharadi vimannagar hinjavdi ( chinchavad 3000 cot besis 10 9 ) */}
+
           <Link
             className="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700"
             to="setexam"
@@ -143,6 +146,14 @@ const SideNav = () => {
 
           <Link
             className="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700"
+            to="/dashboard/manageExam"
+          >
+            <PiExamDuotone />
+            <span className="mx-2 text-sm font-medium">Manage Exams</span>
+          </Link>
+
+          <Link
+            className="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700"
             to="/dashboard/createUser"
           >
             <FiUserPlus />
@@ -159,8 +170,8 @@ const SideNav = () => {
 
           <Link
             className="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700"
-             to="/dashboard/examsettings"
-              >
+            to="/dashboard/examsettings"
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
