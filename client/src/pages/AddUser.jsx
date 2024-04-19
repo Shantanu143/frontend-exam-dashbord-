@@ -36,7 +36,7 @@ const AddUsers = () => {
       } else {
         toast.error(message);
       }
-    };
+    }
 
     const StudentsData = async () => {
       const res = await fetch(`/api/exam/students/${id}`, {
