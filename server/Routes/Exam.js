@@ -34,7 +34,6 @@ router.post("/create", verifyUser, async (req, res, next) => {
         })
 
     } catch (error) {
-        console.log(error);
         next(error);
     }
 })
@@ -53,7 +52,7 @@ router.get("/get/:name", verifyUser, async (req, res, next) => {
             })
 
         } else {
-            res.status(401).json({
+            res.status(200).json({
                 success: true,
                 message: "This name is awailable"
             })
@@ -64,7 +63,7 @@ router.get("/get/:name", verifyUser, async (req, res, next) => {
     }
 })
 
-router.get("/isAdded/:id", verifyUser, async (req, res, next) => {
+router.post("/isAdded/:id", verifyUser, async (req, res, next) => {
     try {
 
         const { id } = req.params;
@@ -75,27 +74,28 @@ router.get("/isAdded/:id", verifyUser, async (req, res, next) => {
 
         const getExam = await Exam.findById(id);
 
-        if (!getExam.students.includes( {id: NewUserId} )) {
+        const found = getExam.students.some(ele => String(ele._id) === NewUserId )
+
+        if (!found) {
             await getExam.updateOne({
                 $push: {
                     students: {
-                        id: NewUserId,
-                        email,
-                        name
+                        _id: NewUserId,
+                        name: name
                     }
                 }
             })
 
             return res.status(200).json({
                 success: true,
-                message: "User has been added to exam"
+                res : "added",
+                message: `${name} added to exam`
             })
         } else {
             await getExam.updateOne({
                 $pull: {
                     students: {
-                        id: NewUserId,
-                        email,
+                        _id: NewUserId,
                         name
                     }
                 }
@@ -103,13 +103,32 @@ router.get("/isAdded/:id", verifyUser, async (req, res, next) => {
 
             return res.status(200).json({
                 success: true,
-                message: "User has been removed"
+                res : "removed",
+                message: `${name} has been removed`
             })
 
         }
 
     } catch (error) {
         next(error);
+    }
+})
+
+router.get("/students/:id", async(req, res, next)=> {
+    try {
+        
+        const { id } = req.params;
+        const getExam = await Exam.findById(id);
+
+        const { students } = await getExam._doc;
+
+        res.status(200).json({
+            success: true,
+            data: students
+        })
+
+    } catch (error) {
+        next(error)
     }
 })
 

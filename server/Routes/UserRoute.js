@@ -24,7 +24,6 @@ router.post("/create", async (req, res, next) => {
 
         const { password: pass, createdAt, updatedAt, __v, ...rest } = await user._doc
 
-
         res.status(201)
             .json({
                 success: true,
@@ -69,10 +68,20 @@ router.get("/all", verifyUser, async (req, res, next) => {
     try {
 
         const getAll = await User.find({ role: "user" });
+        const user = [];
+        
+        getAll.map((i)=>{
+            user.push({
+                name: i.username,
+                email: i.email,
+                avatar: i.avatar,
+                _id: i._id
+            })
+        })
 
         res.status(200).json({
             success: true,
-            user: getAll
+            user: user
         })
 
     } catch (error) {

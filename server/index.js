@@ -22,7 +22,6 @@ try {
     console.log("Database is connected");
 } catch (error) {
     console.log("Database is Not Connected!");
-    console.log(error);
 }
 
 app.get("/api/test", (req, res) => {
@@ -43,6 +42,7 @@ app.use((err, req, res, next) => {
         return res.status(400).json({
             success: false,
             statusCode: 303,
+            err,
             message: "User already exist!"
         })
     }
