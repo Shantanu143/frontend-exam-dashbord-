@@ -1,5 +1,6 @@
+import { useEffect } from "react";
+
 const Users = () => {
-  
   const resultTable = [
     {
       name: "Arthur Melo",
@@ -52,6 +53,24 @@ const Users = () => {
       courceEndDate: 30,
     },
   ];
+
+  useEffect(() => {
+
+    const controller = new AbortController();
+
+    const data = async () => {
+      const res = await fetch(`/api/user/all`, {
+        signal: controller.signal,
+      });
+
+      const { success, user } = await res.json();
+
+      console.log(user);
+      return () => controller.abort();
+    };
+
+    data();
+  }, []);
 
   return (
     <section className="container px-4 mx-auto">
